@@ -127,10 +127,10 @@ of a Time-zone Analysis}
 %
 % 1st. author
 \alignauthor
-Jes\'us M. Gonz\'alez-Barahona\\
-       \affaddr{Bitergia}\\
+Jesus M. Gonzalez-Barahona\\
+       \affaddr{Universidad Rey Juan Carlos}\\
        \affaddr{Madrid, Spain}\\
-       \email{jgb@bitergia.com}
+       \email{jgb@gsyc.urjc.es}
 % 2nd. author
 \alignauthor
 Gregorio Robles\\
@@ -139,7 +139,7 @@ Gregorio Robles\\
        \email{grex@gsyc.urjc.es}
 % 3rd. author
 \alignauthor
-Daniel Izquierdo-Cort\'azar\\
+Daniel Izquierdo-Cortazar\\
        \affaddr{Bitergia}\\
        \affaddr{Madrid, Spain}\\
        \email{dizquierdo@bitergia.com}
@@ -158,19 +158,8 @@ Daniel Izquierdo-Cort\'azar\\
 
 \maketitle
 \begin{abstract}
-Free/Libre/Open Source (FLOSS) projects are usually developed by a 
-geographically distributed community of developers and contributors. However,
-in contrast to a traditional corporate environments, it is hard to obtain
-information about where the community is distributed, basically because of
-the nature of the FLOSS movement, where participation is open to volunteers
-and many times just occasional. In the last years, specially with the 
-increasing implication of institutions, non-profit organizations and companies, 
-there is a major interest in having information about the geographic location
-of the community. This is because projects want to be as global as possible,
-in order to attract new contributors, users and, of course, clients. In this
-paper we show a methodology to obtain the geographical distribution of a 
-community by analyzing the source code management system and the mailing lists
-of a project.
+Free/libre/open source software projects are usually developed by a geographically distributed community of developers and contributors. In contrast to traditional corporate environments, it is hard to obtain information about how the community is geographically distributed, mainly because participation is open to volunteers and in many cases it is just occasional. During the last years, specially with the increasing implication of institutions, non-profit organizations and companies, there is a growing interest in having information about the geographic location of developers. This is because projects want to be as global as possible, in order to attract new contributors, users and, of course, clients. In this
+paper we show a methodology to obtain the geographical distribution of a development community by analyzing the source code management system and the mailing lists they use.
 \end{abstract}
 
 
@@ -204,43 +193,20 @@ of a project.
 % We no longer use \terms command
 %\terms{Theory}
 
-\keywords{FLOSS; distributed development; time zones; Open Source;}
+\keywords{FLOSS; distributed development; time zones; open source software;}
 
 
 %-----------------------------------------------------------------------
 \section{Introduction}
 \label{sec:intro}
 
-Although Free/Libre/Open Source software (FLOSS) has not to be developed in a
-distributed environment by a community, it is common practice nowadays that
-it is done so. So, developers and other type of contributors virtually
-share and meet code, suggestions, comments, bug reports and discussions
-on the Internet, generally using specific-purpose communication and 
-development tools. There has been many research studies on FLOSS
-communities, some of them focusing on the fact of
-how communities manage to work in a distributed manner~\cite{german2003gnome,yu2016effect}.
+Although free/libre/open source software (FLOSS) can be produced in many different ways, it is common practice nowadays that it is developed by a geographically distributed community. In this case, developers and other kinds of contributors share code, suggestions, comments, bug reports and discussions on the Internet, using specific-purpose communication and development tools. These communities have been subject of many research studies, some of them focusing on how they manage to work in a distributed manner~\cite{german2003gnome,yu2016effect}.
 
-As communities have become more organized and institutionalized themselves,
-may it be through the creation of foundations or other legal entities~\cite{riehle2010economic}, or with the growing interest in FLOSS
-of industrial companies, the information of where developers, contributors
-and users are has gained more importance. So, some communities have shown
-interest to include such type of information in the community dashboards
-that Bitergia offers\footnote{Some examples of public dashboards offered by
-Bitergia can be found at \url{http://bitergia.com/dashboards/}.}
+As communities have become more organized and institutionalized themselves, may it be through the creation of foundations or other legal entities~\cite{riehle2010economic}, or with the growing interest in FLOSS by industrial companies, the information of where developers, contributors and users are has gained more importance. Some communities have shown interest to include such type of information in their software development dashboards\footnote{For example, dashboards for some communities offered by Bitergia, the company, can be found at \url{http://bitergia.com/dashboards/}.}.
 
-Obtaining geographic information from stakeholders can be of major interest
-for a variety of purposes. For instance, the Debian project holds a map
-with the location of the Debian 
-developers\footnote{The original, up-to-date
-map can be obtained from \url{https://www.debian.org/devel/developers.loc}} %(see figure~\ref{fig:debian-map}) 
-which serves at least for two purposes: first, it shows that Debian is an international
-project, primarily supported in Western countries and with a balance between the
-number of North American and European developers (this fact is interesting, for
-instance, to choose the location of the DebConf, the annual Debian conference);
-second; as becoming a Debian developer requires an admission process~\cite{robles2005evolution} that requires face-to-face contact (for instance,
-to get the RSA key signed by an already Debian developer), the map serves
-applicants to localize Debian developers who are geographically close to their
-location. 
+An example of a community with a long lasting interest in learning about the geographic information of its developers is Debian. The Debian project maintains a map with the location of their developers\footnote{\url{https://www.debian.org/devel/developers.loc}}. %(see figure~\ref{fig:debian-map}),
+It shows how Debian is an international project, primarily based in Western countries, with a certain balance between the number of North American and European developers. This is an interesting fact, for example, to choose the location of the DebConf, the annual Debian conference. It is also useful for Debian applicants to locate developers geographically close to them, since their admission process~\cite{robles2005evolution} requires face-to-face contact (for instance,
+to get the RSA key signed by an already Debian developer). 
 
 %\begin{figure}[!h]
 %\centering
@@ -250,29 +216,14 @@ location.
 %\label{fig:debian-map}
 %\end{figure}
 
-Nonetheless, there are many more reasons for a community to obtain this 
-information. For instance, Mozilla's mission states that they want 
-``people worldwide can be informed contributors and creators of the 
-Web''\footnote{\url{https://www.mozilla.org/en-US/mission/}}, so information
-about virtual participation may be useful to design a global strategy.
-Last but not least, such type of information can be used by companies to 
-assess their penetration (for instance for an U.S.-born start-up to see
-how much its software is used in Europe) and open new markets.
+As another case, Mozilla's mission states that they want that ``people worldwide can be informed contributors and creators of the Web''\footnote{\url{https://www.mozilla.org/en-US/mission/}}, so information about virtual participation is useful to design a global strategy. This type of information can be used as well by companies to assess the interest on their FLOSS products iin certain geographic areas, and as information helpful in opening new markets.
 
-The goal of this paper is to show a methodology to obtain the geographic
-distribution of a FLOSS community by means of analyzing artifacts produced
-as side-product of the software development effort. Therefore data will be
-extracted from source code management systems (such as Git) and mailing list
-archives.
+But getting this information is not easy in most cases, since there are little data sources to collect it. The goal of this paper is to show a methodology to obtain the geographic distribution of a FLOSS community by means of analyzing artifacts produced as side-product of the software development effort. Therefore data will be extracted from source code management systems (such as Git) and mailing list archives, and don't require the active collaboration of developers.
 
-The structure of this paper is as follows.
+The structure of the rest of this paper starts with the presentation of related research.
 % Section~\ref{sec:questions}
 %contains the specific research questions that this paper targets. 
-Next, related research is presented. In Section~\ref{sec:methodology}, we present
-in detail the methodology that has been used in our research. The results
-of applying this technology to the CloudStack project, our case study 
-(see Section~\ref{sec:case-study}), are presented in Section~\ref{sec:results}.
-Finally, conclusions are drawn and future directions are discussed.
+In Section~\ref{sec:methodology}, we detail the proposed methodology. Then we explain how we apply it to analyze the CloudStack project, as an illustrative case study (Section~\ref{sec:case-study}). Results of this application are presented in Section~\ref{sec:results}. Finally, some conclusions are drawn and future directions are discussed.
 
 
 %-----------------------------------------------------------------------
@@ -292,32 +243,14 @@ Finally, conclusions are drawn and future directions are discussed.
 \section{Related research}
 \label{sec:related}
 
-The joint development of a software product by geographically distributed
-teams has become a matter of study since the late 1990s~\cite{carmel1999global}.
-The topic has been as well under study for the FLOSS phenomenon~\cite{german2003gnome,engelhardt2009geographic,von2010geographic},
-with some attention as well
-to regions where FLOSS has merely had an impact, such as 
-Africa~\cite{ouattara2013open}.
+The coordinated development of a software product by geographically distributed
+teams has been a matter of study since the late 1990s~\cite{carmel1999global}.
+The specific case of FLOSS communities has been considered in several cases~\cite{german2003gnome,engelhardt2009geographic,von2010geographic}, even with some attention to regions where FLOSS developemnt is rare, such as Africa~\cite{ouattara2013open}.
 
-From the configuration of the account of over one million registered users
-at SourceForge, their geographic origin could be estimated~\cite{robles2006geographic,gonzalez2008geographic} at the global level. Another way
-of gathering information about the origin of developers has been by performing
-surveys~\cite{ghosh2002free,david2008community}. Some of these surveys were
-interested in the country of origin and the current country of residence in
-order to find developer migration patterns; so, talent is attracted by
-the United States from all over the world~\cite{ghosh2002free}.
+Some of these efforts tried to estimate the location of the global FLOSS development commuunity, such as the study of the geographical data obtained from the accounts of over one million registered users at SourceForge~\cite{robles2006geographic,gonzalez2008geographic}. In other cases, massive surveys were performed~\cite{ghosh2002free,david2008community}. Some of those asked for the country of origin and the current country of residence, in order to find developer migration patterns, finding how talent is attracted by the United States from all over the world~\cite{ghosh2002free}.
 
-In this paper, we do not focus on the global FLOSS community, but on the community
-of a single project. Therefore, instead of performing surveys or analyzing
-software development platforms with many projects, we target project-specific
-tools. A similar approach can be found in Bird et al. who have examined how two 
-large FLOSS projects perform their work in a distributed 
-manner~\cite{bird2012examining}. Related to the methods used in this paper,
-Tang et al. propose a set of 
-techniques for identifying the country origin of mailing list 
-participants~\cite{tang2009techniques}, which they use to perform a case study
-on the impact of global participation on mailing lists communications in
-FLOSS projects~\cite{tang2009case}.
+The target for this paper is not to obtain an statistical estimate of the global FLOSS community, but to obtain a picture as accurate as possible of the community of a given project. Therefore, instead of performing massive surveys or analyzing software development platforms with many projects, we target project-specific tools. A similar approach can be found in Bird et al. who have examined how two large FLOSS projects perform their work in a distributed manner~\cite{bird2012examining}. Related to the methods used in this paper, Tang et al. propose a set of 
+techniques for identifying the country origin of mailing list participants~\cite{tang2009techniques}, which they use to perform a case study on the impact of global participation on mailing lists communications in FLOSS projects~\cite{tang2009case}.
 
 %-----------------------------------------------------------------------
 \section{Methodology}
@@ -591,8 +524,7 @@ out if different patterns can be found.
 %-----------------------------------------------------------------------
 \section*{Acknowledgments}
 
-The work of Jes\'us Gonz\'alez-Barahona and Gregorio Robles has been funded in part by the Spanish Gov. under SobreSale (TIN2011-28110) and by the Comunidad de Madrid under eMadrid (S2013/ICE-2715). Daniel Izquierdo-Cort\'azar is supported by the Spanish Gov. with a Torres Quevedo
- (PTQ-12-05577) grant.
+The work of Jesus Gonzalez-Barahona and Gregorio Robles has been funded in part by the Spanish Gov. under SobreVision (TIN2014-59400-R) and by the Comunidad de Madrid under eMadrid (S2013/ICE-2715). Daniel Izquierdo-Cortazar is supported by the Spanish Gov. with a Torres Quevedo (PTQ-12-05577) grant.
 
 
 
