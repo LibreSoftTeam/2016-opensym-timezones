@@ -216,14 +216,14 @@ to get the RSA key signed by an already Debian developer).
 %\label{fig:debian-map}
 %\end{figure}
 
-As another case, Mozilla's mission states that they want that ``people worldwide can be informed contributors and creators of the Web''\footnote{\url{https://www.mozilla.org/en-US/mission/}}, so information about virtual participation is useful to design a global strategy. This type of information can be used as well by companies to assess the interest on their FLOSS products iin certain geographic areas, and as information helpful in opening new markets.
+As another case, Mozilla's mission states that they want that ``people worldwide can be informed contributors and creators of the Web''\footnote{\url{https://www.mozilla.org/en-US/mission/}}, so information about virtual participation is useful to design a global strategy. This type of information can be used as well by companies to assess the interest on their FLOSS products in certain geographic areas, and as information helpful in opening new markets.
 
 But getting this information is not easy in most cases, since there are little data sources to collect it. The goal of this paper is to show a methodology to obtain the geographic distribution of a FLOSS community by means of analyzing artifacts produced as side-product of the software development effort. Therefore data will be extracted from source code management systems (such as Git) and mailing list archives, and don't require the active collaboration of developers.
 
 The structure of the rest of this paper starts with the presentation of related research.
 % Section~\ref{sec:questions}
 %contains the specific research questions that this paper targets. 
-In Section~\ref{sec:methodology}, we detail the proposed methodology. Then we explain how we apply it to analyze the CloudStack project, as an illustrative case study (Section~\ref{sec:case-study}). Results of this application are presented in Section~\ref{sec:results}. Finally, some conclusions are drawn and future directions are discussed.
+In Section~\ref{sec:methodology}, we detail the proposed methodology. Then we explain how we apply it to analyze the CloudStack project, as an illustrative case study (Section~\ref{sec:case-study}). Finally, some conclusions are drawn and future directions are discussed.
 
 
 %-----------------------------------------------------------------------
@@ -245,9 +245,9 @@ In Section~\ref{sec:methodology}, we detail the proposed methodology. Then we ex
 
 The coordinated development of a software product by geographically distributed
 teams has been a matter of study since the late 1990s~\cite{carmel1999global}.
-The specific case of FLOSS communities has been considered in several cases~\cite{german2003gnome,engelhardt2009geographic,von2010geographic}, even with some attention to regions where FLOSS developemnt is rare, such as Africa~\cite{ouattara2013open}.
+The specific case of FLOSS communities has been considered in several cases~\cite{german2003gnome,engelhardt2009geographic,von2010geographic}, even with some attention to regions where FLOSS development is rare, such as Africa~\cite{ouattara2013open}.
 
-Some of these efforts tried to estimate the location of the global FLOSS development commuunity, such as the study of the geographical data obtained from the accounts of over one million registered users at SourceForge~\cite{robles2006geographic,gonzalez2008geographic}. In other cases, massive surveys were performed~\cite{ghosh2002free,david2008community}. Some of those asked for the country of origin and the current country of residence, in order to find developer migration patterns, finding how talent is attracted by the United States from all over the world~\cite{ghosh2002free}.
+Some of these efforts tried to estimate the location of the global FLOSS development community, such as the study of the geographical data obtained from the accounts of over one million registered users at SourceForge~\cite{robles2006geographic,gonzalez2008geographic}. In other cases, massive surveys were performed~\cite{ghosh2002free,david2008community}. Some of those asked for the country of origin and the current country of residence, in order to find developer migration patterns, finding how talent is attracted by the United States from all over the world~\cite{ghosh2002free}.
 
 The target for this paper is not to obtain an statistical estimate of the global FLOSS community, but to obtain a picture as accurate as possible of the community of a given project. Therefore, instead of performing massive surveys or analyzing software development platforms with many projects, we target project-specific tools. A similar approach can be found in Bird et al. who have examined how two large FLOSS projects perform their work in a distributed manner~\cite{bird2012examining}. Related to the methods used in this paper, Tang et al. propose a set of 
 techniques for identifying the country origin of mailing list participants~\cite{tang2009techniques}, which they use to perform a case study on the impact of global participation on mailing lists communications in FLOSS projects~\cite{tang2009case}.
@@ -256,68 +256,31 @@ techniques for identifying the country origin of mailing list participants~\cite
 \section{Methodology}
 \label{sec:methodology}
 
-This section details the various steps of the empirical process to extract 
-geographical information from publicly available repositories. This analysis is 
-focused on the traces left by developers in the Git repositories. And this can
-be easily extensible to any other data source with geographical log information.
+The analysis we propose is based on the traces left by developers in the Git repositories and mailing lists, and it can be easily extended to other data sources which log some geographical information.
 
 %The results are based on the analysis of the Git repositories. Git is a
 %distributed source code management system tool that allow developers to work
 %in their own servers. Those changes to the source code, named as commits, can be
 %later \emph{merged} or sent for a \emph{code review} process within the community.
 
-Thanks to the distributed design of Git, each commit contains geographical
-information, that is the timezone where the change to the source code took place.
-That information is either taken from the local system where the developer works or
-configured by that developers.
-In addition to the timezone, a commit is typically defined by the \emph{author} of the
-commit, the \emph{date} with the \emph{timezone}, a list of \emph{touched} files,
-a \emph{log message} and others. 
-
+In the specific case of Git, each commit includes as a part of its metadata some geographical information: a timezone. It is set according to the timezone obtained from the configuration of the computer where the commit took place, usually the one of the committer. And it is kept as the commit is merged in the main code base of the project. In the case of mailing lists, similar information is maintained in the message headers referring to dates. In particular, one of them keeps the timezone of the machine originating the message, usually that of the developer (or one configured with its timezone of residence).
 %Those local commits that are later merged into the main branch, also named as \emph{master}.
 %And 
-
 %% Threats to validity: cherry pick, local setup of the timezone in the laptops,
 %%                      people working around the world.
 
-In detail, the empirical approach is based on the following four steps:
+To obtain and use this information, we follow the following four steps:
 
 \begin{enumerate}
-\item Identification of data sources: this process needs of understanding the
-infrastructure of the community or project to analyze. That information is
-typically accessible and specified in open source communities. This method
-focuses on the development activity, so source code repositories are the
-needed ones.
+\item Identification of data sources. This process needs of the understanding of the infrastructure used by the community or project to analyze. In FLOSS communities, the required information is typically accessible publicly. Since we focus on the development community, the relevant repositories are source code Git repositories, and development mailing lists.
 
-\item Extraction of information from data sources: the data process extraction
-is done thanks to the use of
-\emph{CVSAnalY}\footnote{\url{https://github.com/MetricsGrimoire/CVSAnalY}}
- a FLOSS data extraction tool that allow us to store in a MySQL
-database information coming from Git activity.
+\item Extraction of information from data sources. The data process extraction
+is done with \emph{CVSAnalY}\footnote{\url{https://github.com/MetricsGrimoire/CVSAnalY}} (for Git) and \emph{MLStats}\footnote{\url{https://github.com/MetricsGrimoire/MailingListStats}} (for mailing lists), two FLOSS data extraction tools that store the information they retrieve in a MySQL/MariaDB database. It is part of the \emph{Metrics Grimoire toolset}\footnote{\url{https://github.com/MetricsGrimoire}}, built and maintained by our team.
 %link to the tools for usual bla bla from IJOSSP.
 
-\item Analysis of the dataset: we need then to filter part of the data.
-Given the amount of information provided by CVSAnalY, and that not all of
-such information is useful for this analysis, several filters can be applied
-to the analysis.
+\item Analysis of the dataset. Given the amount of information provided by CVSAnalY and MLStats, and that not all of it is needed for this analysis, several filters can be applied before starting the analysis. In the case of Git, we ignore \emph{merge} commits were ignored, and commits performed by bots: merges commits are in most cases performed automatically, or are not directly reflecting changes to the code, and bots do not directly correspond to the activity of a human. In the case of mailing lists, we ignore messages by bots, for the same reasons.
 
-In this case, \emph{merge} commits were ignored. The rationale
-for this is that merges are in most of the cases automatically done and do not
-have more information that the action and the point in time where a merge took place; no source code is modified.
-
-\item Timezone analysis: for this, we took advantage of
-\emph{GrimoireLib}\footnote{\url{https://github.com/VizGrimoire/GrimoireLib/}} a library
-specialized on the analysis of information structured in SQL databases coming from
-\emph{Metrics Grimoire}\footnote{\url{https://github.com/MetricsGrimoire}}. This library provides
-a framework to deal with all of the resultant databases supporting the use of the
-output of \emph{CVSAnalY}. A new study was developed, the timezone analysis. This analysis
-groups activities depending on the specified timezone and takes into account the
-differences in some countries when changing the timezone in Winter or Summer.
-
-%TODO: Jesus, you should probably elaborate a bit more this part.
-%Threats to validity, in some cases it's hard to guess if this is a change in Europe or
-%Africa and also there are timezones with half-hours like in India, what makes a bit more
-%complex this analysis.
+\item Timezone analysis. We use \emph{GrimoireLib}\footnote{\url{https://github.com/VizGrimoire/GrimoireLib/}}, a library specialized in the analysis of information organized in SQL databases produced by \emph{Metrics Grimoire tools}. This library provides a framework to deal with all of the resultant databases supporting the use of the output of \emph{CVSAnalY} and \emph{MLStats}. For our purposes, some new code was developed to perform the timezone analysis. It groups activities depending on the specified timezone, as a time difference from GMT, in integer hours (non-integer time zones, such as GMT+5:30, used in India, are rounded to their floor integer).
 
 \end{enumerate}
 
@@ -326,17 +289,11 @@ differences in some countries when changing the timezone in Winter or Summer.
 \section{Case Study: CloudStack}
 \label{sec:case-study}
 
-The CloudStack project\footnote{\url{http://cloudstack.apache.org/}}
-is a FLOSS project part of the Apache
-Software Foundation. Its main goal is to provide easy deployment
-and management of large networks of virtual machines. This project
-provides infrastructure as a service (IaaS) highly available
-and scalable.
+The CloudStack project\footnote{\url{http://cloudstack.apache.org/}} is a FLOSS project under the umbrella of the Apache Software Foundation. Its main goal is to provide easy deployment and management of large networks of virtual machines. This project provides infrastructure as a service (IaaS) highly available and scalable.
 
-First traces of information about CloudStack in the source code
-management system started in August of 2010. This project currently
-holds close to 40,000 commits and 300 different developers
-with at least one commit of activity during these years.
+The first traces of information about CloudStack activity in their Git repositories start in August 2010. These repositories hold, at the end of 2015, close to 40,000 commits and 300 different developers with at least one commit of activity during these years.
+
+The methodology presented in the previous section was applied to all these repositories.
 
 %CloudStack is a project that was born in California; however, nowadays it has
 %a global community.
@@ -349,174 +306,115 @@ with at least one commit of activity during these years.
 %guys from XX company)
 
 %-----------------------------------------------------------------------
-\section{Results}
-\label{sec:results}
+%\section{Results}
+%\label{sec:results}
 
 %In this section we show the result of applying the aforementioned methodology
 %on our case study, CloudStack. 
 We apply our methodology to two different
-sources from CloudStack: source code management (SCM) repositories and mailing lists (MLs). From
-SCM repositories we can obtain geographic information about
-how distributed the development team is. Data from MLs provides
-information about the community in general, including contributors to 
-activities different than coding and end users.
+sources from CloudStack: Git source code management (SCM) repositories and mailing lists archives (MLs). From SCM repositories we can obtain geographic information about how distributed the team of software developers is. Data from MLs provides information about the development community in general, including contributors to activities different than coding.
 
 \subsection{Analysis of SCM}
 
 %First, the analysis of the \texttt{git} repository, the SCM
 %system in use in CloudStack, will we presented. 
 
-We have taken commits on a 
-yearly basis and show the results graphically for authors and commits.
-Authors is a proxy of the number of developers working on a project, while
-commits gives an idea of the development activity.
+We have grouped commits on a yearly basis, and showed the results graphically for number of distinct authors and number of commits for each period. The number of distinct authors is a good proxy of the number of developers working on the project, while the number of commits gives an idea of the overall development activity.
 
-Figure~\ref{fig:2010-scm} provides the results for the early phases of the
-project, for the year 2010. The horizontal axis provides the detected time-zone
-relative to UTC. As it can be observed from the figures of authors at the top, there is just one developer in UTC, which is the timezone where UK, Ireland 
-and Portugal are located. The majority of the developers are
-thus located in timezones of the U.S. West Coast, UTC-7 and UTC-8. From the
-figure some developers in the U.S. East Coast time zone (UTC-5 and UTC-4)
-can be seen. A final group of three developers can be identified in India
-(UTC+5).
+Figure~\ref{fig:2010-scm} shows the results for the early phases of the
+project (year 2010). The horizontal axis references the detected time-zone
+relative to UTC. As it can be observed from the chart for authors, there is just one developer in UTC+0 (the timezone for UK, Ireland and Portugal), and three in UTC+5 (India). Almost all developers are located in timezones corresponding to the U.S. West Coast (UTC-7 and UTC-8, for Winter and Summer time), with some very likely in the U.S. East Coast (UTC-5 and UTC-4), although these timezones are shared with some countries in South America.
 
-The figure at the bottom represents the number of commits during 2014 ordered
-by the timezone of their author. Here, it can be seen that the influence of the
-West Coast is so high, that the contributions of the East Coast and Europe
-are marginal. Only contributions from India have a small effect.
+The chart for commits is even more revealing, which most of the activity clearly focused on the U.S. West Coast: so much, that the contributions from other regions are almost negligible.
 
-In summary, CloudStack was in 2010 a project that had developers from several
-regions, but the main development activity was concentrated in the U.S. West
-Coast.
+In summary, CloudStack was in 2010 a project that had developers from several regions, but the main development activity was clearly concentrated in the U.S. West Coast.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-scm-authors-2010.pdf}
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-scm-commits-2010.pdf}
-\caption{2010 time-zone analysis for authors (top) and commits (bottom) for
-the CloudStack project SCM repository.}
+\caption{Time-zone analysis for authors (top) and commits (bottom) for
+the CloudStack Git repositories (2010).}
 \label{fig:2010-scm}
 \end{figure}
 
-Figure~\ref{fig:2014-scm} shows the same analysis for CloudStack's SCM
-repository, but this time for the year 2014. As we can see
-from the figure at the top, the number of authors has increased significantly
-in these four years. In addition, the project is more geographically distributed.
-So, on one hand, we can observe authors from all U.S. time zones, although
-being the West Coast still predominant. The three European timezones (UTC to UTC+2)
-have all over 20 developers, and India (UTC+5) achieves the maximum number
-of authors with 55. Developers from other Asian or from Australia are marginally
-present too (see UTC+7 to UTC+10).
+Figure~\ref{fig:2014-scm} shows the same analysis for CloudStack Git repositories during 2014. As we can see from the authors chart, their number increased significantly in those four years. In addition, the project was more geographically distributed. Now we can observe authors from all America time zones, although the West Coast is still predominant. The three European timezones (UTC+0 to UTC+2) have all over 20 developers, and India (UTC+5) has the maximum number
+of authors, 55. Developers from other Asian areas, or from Australia, are marginally present too (UTC+7 to UTC+10).
 
-If we have a look at the bottom figure of Figure~\ref{fig:2014-scm}, we observe
-the number of commits by timezone. Here we see that the CloudStack development
-is performed in three regions, the U.S. (with a peak in the West), Europe (with
-a peak in Eastern Europe, UTC+2) and India (UTC+5).
-
+If we observe the commits chart in the same Figure~\ref{fig:2014-scm}, we see that CloudStack development activity is performed in three regions: the U.S. (with a peak in the West), Europe (with a peak in Eastern Europe, UTC+2) and India (UTC+5).
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-scm-authors-2014.pdf}
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-scm-commits-2014.pdf}
-\caption{2014 time-zone analysis for authors (top) and commits (bottom) for
-the CloudStack project SCM repository.}
+\caption{Time-zone analysis for authors (top) and commits (bottom) for
+the CloudStack Git repositories (2014).}
 \label{fig:2014-scm}
 \end{figure}
 
 
 \subsection{Analysis of MLs}
 
-Figure~\ref{fig:2012-mls} offers the results for the analysis of the
-CloudStack MLs for the year 2012. The vertical axis in the figure
-at the top provides the number of different authors, while for the figure
-at the bottom it corresponds to number of messages. MLs in 2012 already showed a global distribution
+Figure~\ref{fig:2012-mls} shows the results for the analysis of the
+CloudStack MLs for the year 2012. The vertical axis in the authors chart represents provides the number of different authors, while for the messages chart it corresponds to number of messages. MLs in 2012 already showed a global distribution
 of participants of the CloudStack project, hinting that authorship and activity
 in MLs possibly precedes development activity. However, there are
-two interesting points that require a specific analysis for themselves: The first
-one is the UTC time zone, which includes all authors and activity from countries
-such as UK, Ireland or Portugal, but as well all those who use the default
-timezone in their mail clients. Therefore, the data for UTC has to be taken 
-with care. On the other hand, we have UTC+8, which corresponds to China,
-Southeast Asia and Australia's Western Standard Time, among other territories.
-That timezone is used by a large number of authors, but few messages have been
-sent.
+two interesting aspects that require a specific analysis by themselves: the cases of UTC+0 and UTC+8. UTC+0 includes authors and activity from countries
+such as UK, Ireland or Portugal, but as well all those who configure their timezone as ``GMT'' in their mail clients, such as for example many frequent travelers do. Therefore, the data for UTC+0 has to be considered with some precaution. In the case of UTC+8, which corresponds to China, Southeast Asia and Australia's Western Standard Time, among other territories, it is strange how there is a large number of authors, but few messages have been sent. This very corresponds to a much lower participation per person than in other regions.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-mls-authors-2012.pdf}
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-mls-messages-2012.pdf}
-\caption{2012-mls}
+\caption{Time-zone analysis for authors (top) and messages (bottom) for
+the CloudStack development mailing list archives (2012).}
 \label{fig:2012-mls}
 \end{figure}
 
-Figure~\ref{fig:2014-mls} gives the same analysis for MLs,
-but this time for number of authors and messages per timezone in the year
-2014. Again, UTC is the most significant timezone, which heavily biases results,
-which limits the possibility of performing a proper analysis.
+Figure~\ref{fig:2014-mls} shows the same analysis for MLs during 2014. Again, UTC+0 is the most significant timezone, which heavily biases results, thus limiting the possibility of performing a proper analysis.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-mls-authors-2014.pdf}
 \includegraphics[width=6.9cm]{figs/cloudstack/tz-mls-messages-2014.pdf}
-\caption{2014-mls}
+\caption{Time-zone analysis for authors (top) and messages (bottom) for
+the CloudStack development mailing list archives (2014).}
 \label{fig:2014-mls}
 \end{figure}
 
 
 %-----------------------------------------------------------------------
-\section{Discussion}
+\section{Discussion and conclusions}
 \label{sec:discussion}
 
-The application of our methodology on the case study has shown that it
-is a good to determine if a project is developed and supported globally. 
-So, for instance, we could identify that the CloudStack project was
-originally developed in a limited geographic zone and has expanded to 
-be globally distributed in the last four years. This finding, by itself
-is very promising.
+We have shown how the proposed methodology allows for the determination of the main geographical areas with activity related to development. In the case of CloudStack we could find out how it started in a certain region, and later expanded to 
+be globally distributed.
 
-On the other hand, the methodology can be fully automated with free software
-tools and uses as the
-basis for its analysis data that is in general available or can easily be
-obtained.
+The methodology can be fully automated, and it uses as the basis for its analysis data that is in general available or can easily be obtained.
 
-However, there are a number of limitations in the approach that we have
-presented:
+However, there are some limitations:
 
 \begin{enumerate}
 
-  \item There are some territories that have a different time zone during
-Winter and Summer. This can be seen visually in our charts with a \emph{shift}
-of the bars.
+  \item Some regions have a different time zone during Winter and Summer. This can mangle the results, at least visually.
 
-  \item The nature of timezones, comprising several territories makes it
-impossible to know, given a time zone, to what specific country (or territory)
-the author belongs. So for instance, the Central European time zone includes
-from Spain to Poland in Europe, but many African countries as well. Our
-original approach for this study was to use a world map instead of stack bars.
-However we found that by doing so the results were more easily to be interpreted
-in a wrong way.
+  \item The nature of timezones, comprising several regions, makes it impossible to know to what specific zone belongs a developer. For example the Central European time zone includes from Spain to Poland in Europe, but many African countries as well.
 
-  \item The UTC+0 configuration problem in email clients includes a severe 
-\emph{bias} for this time zone, as it has been shown from the analysis of the
+  \item The UTC+0 configuration problem in email clients may cause a severe 
+\emph{bias} for this time zone, as it has been shown in the analysis of the
 MLs in CloudStack.
 
-  \item We have observed that sometimes obtaining the data for the mailing
+  \item Sometimes, obtaining the data for the mailing
 list analysis is not straightforward as the archives only store the server
-date. Thus, to perform the analysis correctly, the original time and time zone
-information has to be preserved.
+date. To perform the analysis correctly, the time and time zone data in the original messages has to be preserved, and it not always is.
 
 \end{enumerate}
 
-%-----------------------------------------------------------------------
-\section{Conclusions and future work}
-\label{sec:conclusions}
-
-In this paper we have presented a methodology that can be used to measure
-the globalization of a FLOSS project. Our method is based on data that
-is in general publicly available, and that can be analyzed using free software
-tools. With the help of a case study, we have seen how we can infer 
+In summary, we have presented a methodology that can be used to measure
+the geographic distributed of a FLOSS project. It is based on data that
+is in general publicly available, as a side-product of software development processes. With the help of a case study, we have explored how we can infer 
 information about the geographic dispersion of contributors to the project,
-and by doing the analysis on an annual basis, how it changes over time.
+and how it changes over time.
 
 As future work we plan to apply this methodology to other projects to find
 out if different patterns can be found.
